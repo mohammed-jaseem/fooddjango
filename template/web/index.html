@@ -1,0 +1,116 @@
+{% extends 'base/web-base.html' %}
+
+{% load static %}
+
+{% block container %}
+
+<body class="text-[#515151]">
+    <header class="h-[100px] shadow-md">
+        <section class="flex items-center justify-between h-full wrapper">
+            <div class="">
+                <h1><a href="index.html"><img src="{% static 'web/images/logo.png' %}" alt="" class="w-[90px]"></a></h1>
+            </div>
+            <div class="hidden md:block">
+                <ul class="flex items-center">
+                    <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="index.html"><img src="{% static 'web/images/home.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">Home</a></li>
+                    <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="#"><img src="{% static 'web/images/search.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">search</a></li>
+                    <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="{% url 'web:cart' %}"><img src="{% static 'web/images/bag.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">cart</a></li>
+                    <li><a class="flex justify-start items-center text-[20px]" href="{% url 'web:account' %}"><img src="{% static 'web/images/user.png' %}" alt="image" class="w-[18px] mr-2">Account</a></li>                   
+                </ul>
+            </div>
+            <div class="flex items-center justify-end">
+                <a href=""><img src="{% static 'web/images/map.png' %}" alt="" class="w-[18px] h-[18px] mr-1"></a>
+                <p class="text-[16px] font-semibold pb-1 border-b-2 border-yellow-400">Tirur,Malappuram</p>
+                <a class="flex items-center ml-4 bg-red-500 px-[5px] py-[5px] text-[#fff] rounded-2xl" href="{% url 'web:logout' %}">Logout<img  class="w-[18px] h-[18px] ml-2" src="/static/web/images/logout.png" alt=""></a>
+            </div>
+        </section>
+    </header>
+    
+    <section class="py-10 wrapper">
+        <sectionn class="swiper mySwiper ">
+            <div class="swiper-wrapper">
+                {% for slider in slideries %}
+                <a href="{% url 'web:singlerest' id=slider.restaurant.id %}" class="swiper-slide block">
+                    <img src="{{slider.image.url}}" alt="image" class="w-full rounded-2xl"> 
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+    
+    <section>
+        <section class="wrapper">
+            <h3 class="text-[24px] font-semibold mb-5">What's On Your Mind?</h3>
+            <div class="flex items-center justify-start overflow-scroll sm:overflow-hidden">
+                {% for restaurantcategory in restaurant_categories %}
+                <a href="{% url 'web:restaurants' id=restaurantcategory.id %}" class="min-w-[25%] max-w-[25%] sm:min-w-[20%] sm:max-w-[20%]">
+                    <img src="{{restaurantcategory.image.url}}" alt="image">
+                    <h3 class="font-semibold text-center">{{restaurantcategory.title}}</h3>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+    
+    <section class="py-10">
+        <section class="wrapper">
+            <h3 class="text-[24px] font-semibold mb-5">What's On Your Mind?</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
+             {% for restaurant in restaurants %}
+              <div class="col-span-1 p-4 border rounded-lg "> 
+                    <a href="{% url 'web:singlerest' id=restaurant.id %}" class="flex justify-start">
+                        <img src="{{restaurant.image.url}}" alt="image" class="w-[35%] rounded-xl mr-4">
+                        <div class="w-[65%]">
+                            <h3 class="text-[16px] font-semibold mb-1">{{restaurant.title}}</h3>
+                            <p class="text-[13px] mb-1">{{restaurant.short_discription}}</p>
+                            <div class="flex items-center justify-start">
+                                <span class="flex items-center justify-start mr-4">
+                                    <img src="{% static 'web/images/star.png' %}" alt="image" class="w-[16px] mr-2 ">
+                                    {{restaurant.rating}}
+                                </span>
+                                <span class="flex items-center justify-start mr-4">
+                                    <img src="{% static 'web/images/clock.png' %}" alt="image" class="w-[16px] mr-2 ">
+                                    {{restaurant.timer}}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+      <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        499:{
+            slidesPerView: 1,
+            spaceBetweenSlides:50
+        },
+        999:{
+            slidesPerView: 3,
+            spaceBetweenSlides:50
+        }
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
+    
+{% endblock %}

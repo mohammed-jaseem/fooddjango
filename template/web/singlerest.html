@@ -1,0 +1,90 @@
+{% extends 'base/web-base.html' %}
+{% load static %}
+{% block container %}
+
+<header class="h-[100px] shadow-md">
+    <section class="flex items-center justify-between h-full wrapper">
+        <div class="">
+            <h1><a href="index.html"><img src="{% static 'web/images/logo.png' %}" alt="" class="w-[90px]"></a></h1>
+        </div>
+        <div class="hidden md:block">
+            <ul class="flex items-center">
+                <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="index.html"><img src="{% static 'web/images/home.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">Home</a></li>
+                <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="#"><img src="{% static 'web/images/search.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">search</a></li>
+                <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="{% url 'web:cart' %}"><img src="{% static 'web/images/bag.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">cart</a></li>
+                <li class=" mr-7"><a class="flex justify-center text-[18px] items-center" href="#"><img src="{% static 'web/images/user.png' %}" alt="image" class="w-[18px] h-[18px] mr-2">user</a></li>                    
+            </ul>
+        </div>
+        <div class="flex items-center justify-end">
+            <img src="{% static 'web/images/map.png' %}" alt="" class="w-[18px] h-[18px] mr-4">
+            <p class="text-[16px] font-semibold pb-1 border-b-2 border-yellow-400">Tirur,Malappuram</p>
+            <a class="flex items-center ml-4 bg-red-500 px-[5px] py-[5px] text-[#fff] rounded-2xl" href="{% url 'web:logout' %}">Logout<img  class="w-[18px] h-[18px] ml-2" src="/static/web/images/logout.png" alt=""></a>
+        </div>
+    </section>
+</header>
+<div class="max-w-[620px] mb-[30px] m-auto mt-[30px]">
+    <div class="col-span-1 p-4 rounded-lg border flex justify-start">
+        <img src="{{restaurant.image.url}}" alt="image" class="w-[20%] rounded-xl mr-4">
+        <div class="w-[65%]">
+            <h3 class=" text-[16px] font-semibold mb-1">{{restaurant.title}}</h3>
+            <p class="text-[14px] mb-4">{{restaurant.short_discription}}</p>
+            <div class="flex justify-start items-center">
+                <span class=" flex justify-start items-center mr-4">
+                    <img src="{% static 'web/images/star.png' %}" alt="image" class="w-[16px] mr-2">
+                    {{restaurant.rating}}
+                </span>
+                <span class="flex justify-start items-center">
+                    <img src="{% static 'web/images/clock.png' %}" alt="image" class="w-[16px] mr-2">
+                    {{restaurant.timer}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="max-w-[620px] m-auto">
+    {% for foodcategory in restaurant.foodcategory_set.all %}
+    <h1 class="font-[800] mb-[20px]">{{foodcategory.name}}</h1>
+    <ul>
+        {% for food,quantity in prod_with_qty %}
+        {% if food.foodcategory == food.foodcategory %}
+        <li class="flex justify-between h-[150px] pb-[15px] border-b-[2px] w-[100%] mb-[30px]">
+            <div class="h-[100%] w-[50%]">
+                {% if food.is_veg %}
+                <img src="{% static 'web/images/veg.png' %}" alt="non" class="h-[20px]">
+                {% else %}
+                <img src="{% static 'web/images/non.png' %}" alt="non" class="h-[20px]">
+                {% endif %}
+                <h2 class="text-[18px] font-[600]">{{food.name}}</h2>
+                <span class="text-[18px] font-[600] block">{{food.price}}</span> 
+                {% if quantity > 0 %} 
+                <div class="w-[60px] flex justify-between">
+                    <a href="{% url 'web:minus_cart' id=food.id %}" class="bg-[#2AC489] w-[33%] rounded-l-[5px] text-white text-center h-[100%]">-</a>
+                    <span>{{quantity}}</span>
+                    <a href="{% url 'web:plus_cart' id=food.id %}" class="bg-[#2AC489] w-[33%] rounded-r-[5px] text-white text-center h-[100%]">+</a>
+                </div> 
+                {% else %}     
+                <a href="{% url 'web:add_cart' id=food.id %}" class="bg-[#45dd72] px-[12px] py-[6px] rounded-[5px] text-white font-[700] mt-[20px] hover:text-red-500">ADD</a>
+                {% endif %}
+            </div>
+            <img src="{{food.image.url}}" alt="rest" class="h-[100%] rounded-[5px]">
+        </li>
+    </ul>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}    
+</div>
+<ul class="max-w-[640px] flex justify-between bg-[rgb(195,71,71)] m-auto h-[40px] items-center px-[15px] rounded-[5px] mb-[20px]">
+    <li class="text-white font-[500]">
+        1 Item | ₹ 180
+    </li>
+    <li class="flex items-center h-[100%]">
+        <a href="{% url 'web:cart' %}" class="text-white font-[500]">View Cart</a>
+        <img src="{% static '/web/images/cart.png' %}" alt="cart" class="h-[50%]">
+    </li>
+</ul>
+
+
+
+
+{% endblock %}

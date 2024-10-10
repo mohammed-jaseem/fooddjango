@@ -1,0 +1,59 @@
+{% extends 'base/web-base.html' %}
+{% block container %}
+{% load static %}
+
+
+
+<header class="h-[80px] flex items-center px-[15px]">
+    <a class="h-[100%]" href="{% url 'web:index'%}"><img src="{% static '/web/images/arrow.png' %}" alt="arrow" class="h-[40%] mt-[20px]"></a>
+    <h1 class="text-center relative left-[40%] text-[22px] font-[600]">Restaurants</h1>
+</header>        
+<section>
+    <h3 class="px-[15px] font-[600] mt-[50px]">
+        Filter By Category
+    </h3>
+    <ul class="flex flex-wrap px-[20px] text-center w-[100%] justify-between">
+        {% for restaurantcategory in restaurant_categories %}
+        <li class="max-w-[25%] min-w-[25%] sm:max-w-[20%] sm:min-w-[20%] md:max-w-[15%] md:min-w-[15%]">
+            <a class="max-w-[25%] min-w-[25%] sm:max-w-[20%] sm:min-w-[20%] md:max-w-[15%] md:min-w-[15%]" href="{% url 'web:restaurants' id=restaurantcategory.id %}">
+                <img src="{{restaurantcategory.image.url}}" alt="cat" class="w-[100%]">
+                <span class="hover:text-red-500">{{restaurantcategory.title}}</span>  
+            </a>                    
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<div class="px-[15px] mb-[50px]">
+    <h3 class="mb-[20px] font-[600] mt-[40px]">
+        Available Restaurants!
+    </h3>
+    <ul class="flex justify-around flex-wrap">
+        {% for restaurant in restaurents %}
+        <li class="flex w-[100%] sm:max-w-[380px] h-[150px]">
+            <a class="flex w-[100%] sm:max-w-[380px] mb-[10px] h-[150px] p-[20px] border-[1px] rounded-[5px]" href="{% url 'web:single_rest' id=restaurant.id %}">
+                <img src="{{restaurant.image.url}}" alt="rest" class="h-[100%] rounded-[5px] mr-[15px]">
+                <div class="mt-[-8px]">
+                    <h1 class="text-[16px] sm:text-[22px] font-[600] mb-[5px]">{{restaurant.title}}</h1>
+                    <h3 class="mb-[5px]">{{restaurant.discription}}</h3>
+                    <ul class="flex mb-[5px]">
+                        <li class="flex mr-[15px] items-center">
+                            <img src="{% static 'web/images/star.png' %}" alt="star" class="h-[20px] mr-[10px]">
+                            <p class="text-[15px] sm:text-[18px] font-[600]">{{restaurant.rating}}</p>
+                        </li>
+                        <li class="flex mr-[15px] items-center">
+                            <img src="{% static 'web/images/clock.png' %}" alt="clock" class="h-[20px] mr-[10px]">
+                            <p class=" text-[15px] sm:text-[18px] font-[600]">{{restaurant.time}}</p>
+                        </li>
+                    </ul>
+                    <div class="flex">
+                        <img src="{% static 'web/images/discount.png' %}" alt="discount" class="h-[20px] mr-[3px]">
+                        <p class="text-[13px] sm:text-[16px] font-[600] text-[#F44336]">{{restaurant.coupen}}</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
