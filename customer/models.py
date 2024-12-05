@@ -57,9 +57,9 @@ class CartBill(models.Model):
     
 
 class Offer(models.Model):
-    code = models.CharField(max_length=225)
-    discount = models.FloatField()
-    short_description = models.CharField(max_length=225)
+    code = models.CharField(max_length=50)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
+    short_description = models.TextField() 
     is_percentage = models.BooleanField()
 
     class Meta:
